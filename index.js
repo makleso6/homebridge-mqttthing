@@ -365,6 +365,9 @@ function makeThing( log, accessoryConfig, api ) {
                     charac.on( 'set', function( value, callback, context ) {
                         if( context !== c_mySetContext ) {
                             state[ property ] = value;
+                            if ( value == false ) {
+                                disableAdaptiveLighting( 'power control' )
+                            }
                             publish( getOnOffPubValue( value ) );
                         }
                         callback();
@@ -403,6 +406,9 @@ function makeThing( log, accessoryConfig, api ) {
                         // if it changed, set characteristic
                         if( state[ property ] != newState ) {
                             state[ property ] = newState;
+                            if ( newState == false ) {
+                                disableAdaptiveLighting( 'power control' )
+                            }
                             setCharacteristic( charac, mapValueForHomebridge( newState, mapValueFunc ) );
                         }
                         // optionally reset state to OFF after a timeout
