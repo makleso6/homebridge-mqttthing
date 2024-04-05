@@ -345,7 +345,7 @@ function makeThing( log, accessoryConfig, api ) {
                 }
             }
 
-            function booleanCharacteristic( service, property, characteristic, setTopic, getTopic, initialValue, mapValueFunc, turnOffAfterms, resetStateAfterms, enableConfirmation ) {
+            function booleanCharacteristic( service, property, characteristic, setTopic, getTopic, initialValue, mapValueFunc, turnOffAfterms, resetStateAfterms, enableConfirmation, disableAdaptiveLightingWhenOff ) {
 
                 var publish = makeConfirmedPublisher( setTopic, getTopic, property, enableConfirmation );
 
@@ -365,7 +365,7 @@ function makeThing( log, accessoryConfig, api ) {
                     charac.on( 'set', function( value, callback, context ) {
                         if( context !== c_mySetContext ) {
                             state[ property ] = value;
-                            if ( value == false ) {
+                            if ( value == false && disableAdaptiveLightingWhenOff ) {
                                 disableAdaptiveLighting( 'power control' )
                             }
                             publish( getOnOffPubValue( value ) );
@@ -406,7 +406,7 @@ function makeThing( log, accessoryConfig, api ) {
                         // if it changed, set characteristic
                         if( state[ property ] != newState ) {
                             state[ property ] = newState;
-                            if ( newState == false ) {
+                            if ( newState == false && disableAdaptiveLightingWhenOff) {
                                 disableAdaptiveLighting( 'power control' )
                             }
                             setCharacteristic( charac, mapValueForHomebridge( newState, mapValueFunc ) );
@@ -1332,7 +1332,7 @@ function makeThing( log, accessoryConfig, api ) {
 
             // Characteristic.On
             function characteristic_On( service ) {
-                booleanCharacteristic( service, 'on', Characteristic.On, config.topics.setOn, config.topics.getOn, null, null, config.turnOffAfterms, config.resetStateAfterms, true );
+                booleanCharacteristic( service, 'on', Characteristic.On, config.topics.setOn, config.topics.getOn, null, null, config.turnOffAfterms, config.resetStateAfterms, true, config.disableAdaptiveLightingWhenOff );
             }
 
             // History for On (Eve-only)
