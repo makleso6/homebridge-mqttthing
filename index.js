@@ -1449,7 +1449,7 @@ function makeThing( log, accessoryConfig, api ) {
             }
 
             function characteristic_CharacteristicValueTransitionControl( service ) {
-                if (config.topics.getCharacteristicValueTransitionControl) {}
+                if (config.topics.getCharacteristicValueTransitionControl) {
                     stringCharacteristic( service, 'characteristicValueTransitionControl', Characteristic.CharacteristicValueTransitionControl, config.topics.setCharacteristicValueTransitionControl, config.topics.getCharacteristicValueTransitionControl, '')
             
                 }
