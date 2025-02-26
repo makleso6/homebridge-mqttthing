@@ -1442,6 +1442,26 @@ function makeThing( log, accessoryConfig, api ) {
                 }
             }
 
+            function characteristic_CharacteristicValueActiveTransitionCount( service ) {
+                if (config.topics.getCharacteristicValueActiveTransitionCount) {
+                    integerCharacteristic( service, 'characteristicValueActiveTransitionCount', Characteristic.CharacteristicValueActiveTransitionCount, null, config.topics.getCharacteristicValueActiveTransitionCount, {minValue: 0, maxValue: 2, initialValue: 0})
+                }
+            }
+
+            function characteristic_CharacteristicValueTransitionControl( service ) {
+                if (config.topics.getCharacteristicValueTransitionControl) {}
+                    stringCharacteristic( service, 'characteristicValueTransitionControl', Characteristic.CharacteristicValueTransitionControl, config.topics.setCharacteristicValueTransitionControl, config.topics.getCharacteristicValueTransitionControl, '')
+            
+                }
+            }
+
+            function characteristic_SupportedCharacteristicValueTransitionConfiguration( service ) {
+                if (config.topics.getSupportedCharacteristicValueTransitionConfiguration) {
+                    stringCharacteristic( service, 'supportedCharacteristicValueTransitionConfiguration', Characteristic.SupportedCharacteristicValueTransitionConfiguration, null, config.topics.getSupportedCharacteristicValueTransitionConfiguration, '')
+                }
+            }
+
+
             // 'Internal' Characteristic.ColorTemperature for adaptive lighting implementation
             function characteristic_ColorTemperature_Internal( service ) {
                 integerCharacteristic( service, 'colorTemperature', Characteristic.ColorTemperature, null, null, {
@@ -2860,6 +2880,10 @@ function makeThing( log, accessoryConfig, api ) {
                         // no color temperature topic, but support color - so add temperature for adaptive lighting
                         characteristic_ColorTemperature_Internal( service );
                     }
+
+                    characteristic_CharacteristicValueActiveTransitionCount( service );
+                    characteristic_CharacteristicValueTransitionControl( service );
+                    characteristic_SupportedCharacteristicValueTransitionConfiguration( service );
                 }
             } else if( configType == "switch" ) {
                 service = new Service.Switch( name, subtype );
